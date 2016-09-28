@@ -14,6 +14,8 @@ public class MainActivity extends AppCompatActivity
 
     private RingProgressBar mRingProgressBar2;
 
+    private RingProgressBar mRingProgressBar4;
+
     private int progress = 0;
 
     private Handler mHandler = new Handler()
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity
                     progress++;
                     mRingProgressBar1.setProgress(progress);
                     mRingProgressBar2.setProgress(progress);
+                    mRingProgressBar4.setProgress(progress);
                     mRingProgressBar1.setOnProgressListener(new RingProgressBar.OnProgressListener()
                     {
 
@@ -64,6 +67,8 @@ public class MainActivity extends AppCompatActivity
 
         mRingProgressBar1 = (RingProgressBar) findViewById(R.id.progress_bar_1);
         mRingProgressBar2 = (RingProgressBar) findViewById(R.id.progress_bar_2);
+        mRingProgressBar4 = (RingProgressBar) findViewById(R.id.progress_bar_4);
+        mRingProgressBar4.setDrawableRes(R.drawable.ic_android);
 
         new Thread(new Runnable()
         {

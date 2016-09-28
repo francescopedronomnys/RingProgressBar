@@ -23,8 +23,7 @@ import io.netopen.hotbitmapgg.library.R;
  * 一个自定义的圆环进度条
  * 可适用于上传下载
  */
-public class RingProgressBar extends View
-{
+public class RingProgressBar extends View {
 
     //画笔对象
     private Paint paint;
@@ -87,20 +86,17 @@ public class RingProgressBar extends View
     private int radius;
 
 
-    public RingProgressBar(Context context)
-    {
+    public RingProgressBar(Context context) {
 
         this(context, null);
     }
 
-    public RingProgressBar(Context context, AttributeSet attrs)
-    {
+    public RingProgressBar(Context context, AttributeSet attrs) {
 
         this(context, attrs, 0);
     }
 
-    public RingProgressBar(Context context, AttributeSet attrs, int defStyle)
-    {
+    public RingProgressBar(Context context, AttributeSet attrs, int defStyle) {
 
         super(context, attrs, defStyle);
 
@@ -128,8 +124,7 @@ public class RingProgressBar extends View
 
     @SuppressLint("DrawAllocation")
     @Override
-    protected void onDraw(Canvas canvas)
-    {
+    protected void onDraw(Canvas canvas) {
 
         super.onDraw(canvas);
 
@@ -151,8 +146,7 @@ public class RingProgressBar extends View
      *
      * @param canvas
      */
-    private void drawCircle(Canvas canvas)
-    {
+    private void drawCircle(Canvas canvas) {
         //设置画笔颜色
         paint.setColor(ringColor);
         //设置画笔样式
@@ -170,8 +164,7 @@ public class RingProgressBar extends View
      *
      * @param canvas
      */
-    private void drawTextContent(Canvas canvas)
-    {
+    private void drawTextContent(Canvas canvas) {
         //设置stroke的宽度
         paint.setStrokeWidth(0);
         //设置文字的颜色
@@ -185,14 +178,13 @@ public class RingProgressBar extends View
         //获取文字的宽度 用于绘制文本内容
         float textWidth = paint.measureText(percent + "%");
         //绘制文本 会根据设置的是否显示文本的属性&是否是Stroke的样式进行判断
-        if (textIsShow && style == STROKE)
-        {
+        if (textIsShow && style == STROKE) {
             canvas.drawText(percent + "%", centre - textWidth / 2, centre + textSize / 2, paint);
         }
     }
 
     private void drawDrawableContent(Canvas canvas) {
-        if(drawableRes != -1) {
+        if (drawableRes != -1) {
             Drawable drawable;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                 drawable = getContext().getDrawable(drawableRes);
@@ -200,9 +192,9 @@ public class RingProgressBar extends View
                 drawable = getResources().getDrawable(drawableRes);
             }
 
-            int width=drawable.getIntrinsicWidth();
-            int height =drawable.getIntrinsicHeight();
-            drawable.setBounds(centre - width/2, centre - height/2, centre + width/2, centre + height/2);
+            int width = drawable.getIntrinsicWidth();
+            int height = drawable.getIntrinsicHeight();
+            drawable.setBounds(centre - width / 2, centre - height / 2, centre + width / 2, centre + height / 2);
 
             drawable.draw(canvas);
         }
@@ -214,8 +206,7 @@ public class RingProgressBar extends View
      *
      * @param canvas
      */
-    private void drawProgress(Canvas canvas)
-    {
+    private void drawProgress(Canvas canvas) {
         //绘制进度 根据设置的样式进行绘制
         paint.setStrokeWidth(ringWidth);
         paint.setColor(ringProgressColor);
@@ -225,17 +216,14 @@ public class RingProgressBar extends View
         //FIll样式
         RectF fillOval = new RectF(centre - radius + ringWidth + padding, centre - radius + ringWidth + padding, centre + radius - ringWidth - padding, centre + radius - ringWidth - padding);
 
-        switch (style)
-        {
-            case STROKE:
-            {
+        switch (style) {
+            case STROKE: {
                 paint.setStyle(Paint.Style.STROKE);
                 paint.setStrokeCap(Paint.Cap.ROUND);
                 canvas.drawArc(strokeOval, -90, 360 * progress / max, false, paint);
                 break;
             }
-            case FILL:
-            {
+            case FILL: {
                 paint.setStyle(Paint.Style.FILL_AND_STROKE);
                 paint.setStrokeCap(Paint.Cap.ROUND);
                 if (progress != 0)
@@ -247,8 +235,7 @@ public class RingProgressBar extends View
 
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-    {
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         //获取宽高的mode和size
@@ -274,8 +261,7 @@ public class RingProgressBar extends View
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh)
-    {
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 
         super.onSizeChanged(w, h, oldw, oldh);
         //确定View的宽高
@@ -290,8 +276,7 @@ public class RingProgressBar extends View
      *
      * @return
      */
-    public synchronized int getMax()
-    {
+    public synchronized int getMax() {
 
         return max;
     }
@@ -301,11 +286,9 @@ public class RingProgressBar extends View
      *
      * @param max
      */
-    public synchronized void setMax(int max)
-    {
+    public synchronized void setMax(int max) {
 
-        if (max < 0)
-        {
+        if (max < 0) {
             throw new IllegalArgumentException("The max progress of 0");
         }
         this.max = max;
@@ -316,8 +299,7 @@ public class RingProgressBar extends View
      *
      * @return
      */
-    public synchronized int getProgress()
-    {
+    public synchronized int getProgress() {
 
         return progress;
     }
@@ -327,26 +309,20 @@ public class RingProgressBar extends View
      *
      * @param progress
      */
-    public synchronized void setProgress(int progress)
-    {
+    public synchronized void setProgress(int progress) {
 
-        if (progress < 0)
-        {
+        if (progress < 0) {
             throw new IllegalArgumentException("The progress of 0");
         }
-        if (progress > max)
-        {
+        if (progress > max) {
             progress = max;
         }
-        if (progress <= max)
-        {
+        if (progress <= max) {
             this.progress = progress;
             postInvalidate();
         }
-        if (progress == max)
-        {
-            if (mOnProgressListener != null)
-            {
+        if (progress == max) {
+            if (mOnProgressListener != null) {
                 mOnProgressListener.progressToComplete();
             }
         }
@@ -358,8 +334,7 @@ public class RingProgressBar extends View
      *
      * @return
      */
-    public int getRingColor()
-    {
+    public int getRingColor() {
 
         return ringColor;
     }
@@ -369,8 +344,7 @@ public class RingProgressBar extends View
      *
      * @param ringColor
      */
-    public void setRingColor(int ringColor)
-    {
+    public void setRingColor(int ringColor) {
 
         this.ringColor = ringColor;
     }
@@ -380,8 +354,7 @@ public class RingProgressBar extends View
      *
      * @return
      */
-    public int getRingProgressColor()
-    {
+    public int getRingProgressColor() {
 
         return ringProgressColor;
     }
@@ -391,8 +364,7 @@ public class RingProgressBar extends View
      *
      * @param ringProgressColor
      */
-    public void setRingProgressColor(int ringProgressColor)
-    {
+    public void setRingProgressColor(int ringProgressColor) {
 
         this.ringProgressColor = ringProgressColor;
     }
@@ -402,8 +374,7 @@ public class RingProgressBar extends View
      *
      * @return
      */
-    public int getTextColor()
-    {
+    public int getTextColor() {
 
         return textColor;
     }
@@ -413,8 +384,7 @@ public class RingProgressBar extends View
      *
      * @param textColor
      */
-    public void setTextColor(int textColor)
-    {
+    public void setTextColor(int textColor) {
 
         this.textColor = textColor;
     }
@@ -424,8 +394,7 @@ public class RingProgressBar extends View
      *
      * @return
      */
-    public float getTextSize()
-    {
+    public float getTextSize() {
 
         return textSize;
     }
@@ -435,8 +404,7 @@ public class RingProgressBar extends View
      *
      * @param textSize
      */
-    public void setTextSize(float textSize)
-    {
+    public void setTextSize(float textSize) {
 
         this.textSize = textSize;
     }
@@ -446,8 +414,7 @@ public class RingProgressBar extends View
      *
      * @return
      */
-    public float getRingWidth()
-    {
+    public float getRingWidth() {
 
         return ringWidth;
     }
@@ -457,8 +424,7 @@ public class RingProgressBar extends View
      *
      * @param ringWidth
      */
-    public void setRingWidth(float ringWidth)
-    {
+    public void setRingWidth(float ringWidth) {
 
         this.ringWidth = ringWidth;
     }
@@ -470,8 +436,7 @@ public class RingProgressBar extends View
      * @param dp
      * @return
      */
-    public int dp2px(int dp)
-    {
+    public int dp2px(int dp) {
 
         float density = getContext().getResources().getDisplayMetrics().density;
         return (int) (dp * density + 0.5f);
@@ -481,15 +446,17 @@ public class RingProgressBar extends View
     /**
      * 进度完成回调接口
      */
-    public interface OnProgressListener
-    {
+    public interface OnProgressListener {
 
         void progressToComplete();
     }
 
-    public void setOnProgressListener(OnProgressListener mOnProgressListener)
-    {
+    public void setOnProgressListener(OnProgressListener mOnProgressListener) {
 
         this.mOnProgressListener = mOnProgressListener;
+    }
+
+    public void setDrawableRes(@DrawableRes int drawableRes) {
+        this.drawableRes = drawableRes;
     }
 }
