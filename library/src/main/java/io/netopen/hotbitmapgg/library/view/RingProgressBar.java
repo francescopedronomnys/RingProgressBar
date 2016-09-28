@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -63,6 +65,9 @@ public class RingProgressBar extends View
     //是否显示文字
     private boolean textIsShow;
 
+    @DrawableRes
+    private int drawableRes;
+
     //圆环进度条的样式
     private int style;
 
@@ -115,6 +120,7 @@ public class RingProgressBar extends View
         ringWidth = mTypedArray.getDimension(R.styleable.RingProgressBar_ringWidth, 5);
         max = mTypedArray.getInteger(R.styleable.RingProgressBar_max, 100);
         textIsShow = mTypedArray.getBoolean(R.styleable.RingProgressBar_textIsShow, true);
+        drawableRes = mTypedArray.getResourceId(R.styleable.RingProgressBar_drawable, -1);
         style = mTypedArray.getInt(R.styleable.RingProgressBar_style, 0);
 
         mTypedArray.recycle();
@@ -132,6 +138,7 @@ public class RingProgressBar extends View
 
         //绘制外层圆
         drawCircle(canvas);
+        drawDrawableContent(canvas);
         //绘制文本内容
         drawTextContent(canvas);
         //绘制进度条
@@ -181,6 +188,23 @@ public class RingProgressBar extends View
         if (textIsShow && style == STROKE)
         {
             canvas.drawText(percent + "%", centre - textWidth / 2, centre + textSize / 2, paint);
+        }
+    }
+
+    private void drawDrawableContent(Canvas canvas) {
+        if(drawableRes != -1) {
+            Drawable drawable;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                drawable = getContext().getDrawable(drawableRes);
+            } else {
+                drawable = getResources().getDrawable(drawableRes);
+            }
+
+            int width=drawable.getIntrinsicWidth();
+            int height =drawable.getIntrinsicHeight();
+            drawable.setBounds(centre - width/2, centre - height/2, centre + width/2, centre + height/2);
+
+            drawable.draw(canvas);
         }
     }
 
