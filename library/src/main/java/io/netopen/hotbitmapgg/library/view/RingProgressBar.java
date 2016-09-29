@@ -6,10 +6,12 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -66,6 +68,7 @@ public class RingProgressBar extends View {
 
     @DrawableRes
     private int drawableRes;
+    private String text;
 
     //圆环进度条的样式
     private int style;
@@ -117,6 +120,7 @@ public class RingProgressBar extends View {
         max = mTypedArray.getInteger(R.styleable.RingProgressBar_max, 100);
         textIsShow = mTypedArray.getBoolean(R.styleable.RingProgressBar_textIsShow, true);
         drawableRes = mTypedArray.getResourceId(R.styleable.RingProgressBar_drawable, -1);
+        text = mTypedArray.getString(R.styleable.RingProgressBar_text);
         style = mTypedArray.getInt(R.styleable.RingProgressBar_style, 0);
 
         mTypedArray.recycle();
@@ -173,13 +177,24 @@ public class RingProgressBar extends View {
         paint.setTextSize(textSize);
         //设置文字的style
         paint.setTypeface(Typeface.DEFAULT);
-        //设置进度值
-        int percent = (int) (((float) progress / (float) max) * 100);
-        //获取文字的宽度 用于绘制文本内容
-        float textWidth = paint.measureText(percent + "%");
+        Rect bounds = new Rect();
+        paint.getTextBounds("a", 0, 1, bounds);
         //绘制文本 会根据设置的是否显示文本的属性&是否是Stroke的样式进行判断
         if (textIsShow && style == STROKE) {
-            canvas.drawText(percent + "%", centre - textWidth / 2, centre + textSize / 2, paint);
+            if(text != null) {
+                canvas.drawText(text, centre - paint.measureText(text) / 2, centre + bounds.height() / 2, paint);
+            }else {
+                int percent = (int) (((float) progress / (float) max) * 100);
+                String percentageText = percent + "%";
+                canvas.drawText(percentageText, centre - paint.measureText(percentageText) / 2, centre + bounds.height() / 2, paint);
+            }
+
+            //debug
+            if(false) {
+                paint.setStrokeWidth(1);
+                canvas.drawLine(0, centre, width, centre, paint);
+                canvas.drawLine(centre, 0, centre, height, paint);
+            }
         }
     }
 
@@ -458,5 +473,9 @@ public class RingProgressBar extends View {
 
     public void setDrawableRes(@DrawableRes int drawableRes) {
         this.drawableRes = drawableRes;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

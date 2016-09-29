@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity
 
     private RingProgressBar mRingProgressBar4;
 
+    private RingProgressBar mRingProgressBar6;
+
     private int progress = 0;
 
     private Handler mHandler = new Handler()
@@ -69,6 +71,9 @@ public class MainActivity extends AppCompatActivity
         mRingProgressBar2 = (RingProgressBar) findViewById(R.id.progress_bar_2);
         mRingProgressBar4 = (RingProgressBar) findViewById(R.id.progress_bar_4);
         mRingProgressBar4.setDrawableRes(R.drawable.ic_android);
+
+        mRingProgressBar6 = (RingProgressBar) findViewById(R.id.progress_bar_6);
+        mRingProgressBar6.setText("Code");
 
         new Thread(new Runnable()
         {
